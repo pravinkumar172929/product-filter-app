@@ -1,6 +1,11 @@
 import React from "react";
+import type { Product } from "../types/product";
 
-const ProductTable = () => {
+type ProductTableProps = {
+  products: Product[];
+};
+
+const ProductTable: React.FC<ProductTableProps> = ({ products }) => {
   return (
     <>
       <table>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import "./App.css";
 import { SearchBar } from "./features/SearchBar";
@@ -16,15 +16,22 @@ const PRODUCTS: Product[] = [
 ];
 
 function App() {
-  const [inStocksProduct, setInStocksProduct] = useState(false);
+  const [inStocksProduct, setInStocksProduct] = useState<boolean>(false);
+  const [searchText, setSearchText] = useState<string>("");
 
   return (
     <>
       <SearchBar
         setInStocksProduct={setInStocksProduct}
         inStocksProduct={inStocksProduct}
+        searchText={searchText}
+        setSearchText={setSearchText}
       />
-      <ProductTable products={PRODUCTS} inStocksProduct={inStocksProduct} />
+      <ProductTable
+        products={PRODUCTS}
+        inStocksProduct={inStocksProduct}
+        searchText={searchText}
+      />
     </>
   );
 }

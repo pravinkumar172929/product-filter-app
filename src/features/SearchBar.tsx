@@ -3,16 +3,27 @@ import React from "react";
 type SearchBarProps = {
   inStocksProduct: boolean;
   setInStocksProduct: React.Dispatch<React.SetStateAction<boolean>>;
+  searchText: string;
+  setSearchText: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const SearchBar: React.FC<SearchBarProps> = ({
   setInStocksProduct,
   inStocksProduct,
+  searchText,
+  setSearchText,
 }) => {
   return (
     <>
       <div>
-        <input type="text" placeholder="Search..." />
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchText}
+          onChange={(e) => {
+            setSearchText(e.target.value);
+          }}
+        />
       </div>
       <label htmlFor="check-btn">
         Only show products in stock

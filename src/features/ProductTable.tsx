@@ -4,7 +4,7 @@ import type { Product } from "../types/product";
 type ProductTableProps = {
   products: Product[];
   inStocksProduct: boolean;
-  //   setInStocksProducts: () => void;
+  searchText: string;
 };
 
 // [
@@ -19,6 +19,7 @@ type ProductTableProps = {
 const ProductTable: React.FC<ProductTableProps> = ({
   products,
   inStocksProduct,
+  searchText,
 }) => {
   const groupProductsByCategory = products.reduce<Record<string, Product[]>>(
     (acc, currentProduct) => {
@@ -37,7 +38,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
   //   [P in K]: T;
   // };
 
-  console.log(groupProductsByCategory);
+  //   console.log(groupProductsByCategory);
 
   return (
     <>
@@ -50,24 +51,33 @@ const ProductTable: React.FC<ProductTableProps> = ({
         </thead>
         <tbody>
           {Object.entries(groupProductsByCategory).map(
-            ([category, productItems]) => (
-              <React.Fragment key={category}>
-                <tr>
-                  <th colSpan={2}>{category}</th>
-                </tr>
-                {productItems
-                  .filter((item) => !inStocksProduct || item.stocked)
-                  .map((filteredItem) => (
+            ([category, productItems]) => {
+              const filteredItems = productItems.filter(
+                (item) =>
+                  (!inStocksProduct || item.stocked) &&
+                  item.name
+                    .toLocaleLowerCase()
+                    .includes(searchText.toLocaleLowerCase())
+              );
+              return (
+                <React.Fragment key={category}>
+                  <tr>
+                    <th colSpan={2}>{category}</th>
+                  </tr>
+                  {filteredItems.map((filteredItem) => (
                     <tr
                       key={filteredItem.name}
-                      style={{ color: !filteredItem.stocked ? "red" : "black" }}
+                      style={{
+                        color: !filteredItem.stocked ? "red" : "black",
+                      }}
                     >
                       <td>{filteredItem.name}</td>
                       <td>{filteredItem.price}</td>
                     </tr>
                   ))}
-              </React.Fragment>
-            )
+                </React.Fragment>
+              );
+            }
           )}
         </tbody>
       </table>

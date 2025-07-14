@@ -15,13 +15,22 @@ type ProductTableProps = {
 // ]
 
 const ProductTable: React.FC<ProductTableProps> = ({ products }) => {
-  const groupProductsByCategory = products.reduce((acc, currentProduct) => {
-    if (!acc[currentProduct.category]) {
-      acc[currentProduct.category] = [];
-    }
-    acc[currentProduct.category].push(currentProduct);
-    return acc;
-  }, {});
+  const groupProductsByCategory = products.reduce<Record<string, Product[]>>(
+    (acc, currentProduct) => {
+      if (!acc[currentProduct.category]) {
+        acc[currentProduct.category] = [];
+      }
+      acc[currentProduct.category].push(currentProduct);
+      return acc;
+    },
+    {}
+  );
+
+  //   string = the key (category name like "Fruits" or "Vegetables")
+  //   Product[] = the value (an array of products in that category)
+  //      built in in TS   ==>.     type Record<K extends keyof any, T> = {
+  //   [P in K]: T;
+  // };
 
   console.log(groupProductsByCategory);
 

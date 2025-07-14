@@ -5,7 +5,26 @@ type ProductTableProps = {
   products: Product[];
 };
 
+// [
+//   { category: "Fruits", price: "$1", stocked: true, name: "Apple" },
+//   { category: "Fruits", price: "$1", stocked: true, name: "Dragonfruit" },
+//   { category: "Fruits", price: "$2", stocked: false, name: "Passionfruit" },
+//   { category: "Vegetables", price: "$2", stocked: true, name: "Spinach" },
+//   { category: "Vegetables", price: "$4", stocked: false, name: "Pumpkin" },
+//   { category: "Vegetables", price: "$1", stocked: true, name: "Peas" },
+// ]
+
 const ProductTable: React.FC<ProductTableProps> = ({ products }) => {
+  const groupProductsByCategory = products.reduce((acc, currentProduct) => {
+    if (!acc[currentProduct.category]) {
+      acc[currentProduct.category] = [];
+    }
+    acc[currentProduct.category].push(currentProduct);
+    return acc;
+  }, {});
+
+  console.log(groupProductsByCategory);
+
   return (
     <>
       <table>

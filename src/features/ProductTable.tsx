@@ -44,7 +44,22 @@ const ProductTable: React.FC<ProductTableProps> = ({ products }) => {
           </tr>
         </thead>
         <tbody>
-          <tr>
+          {Object.entries(groupProductsByCategory).map(
+            ([category, productItems]) => (
+              <React.Fragment key={category}>
+                <tr>
+                  <th colSpan={2}>{category}</th>
+                </tr>
+                {productItems.map((item) => (
+                  <tr key={item.name}>
+                    <td>{item.name}</td>
+                    <td>{item.price}</td>
+                  </tr>
+                ))}
+              </React.Fragment>
+            )
+          )}
+          {/* <tr>
             <th colSpan={2}>Fruits</th>
           </tr>
           <tr>
@@ -74,7 +89,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ products }) => {
           <tr>
             <td>Peas</td>
             <td>$1</td>
-          </tr>
+          </tr> */}
         </tbody>
       </table>
     </>

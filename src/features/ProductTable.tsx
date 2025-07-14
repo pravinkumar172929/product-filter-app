@@ -51,7 +51,10 @@ const ProductTable: React.FC<ProductTableProps> = ({ products }) => {
                   <th colSpan={2}>{category}</th>
                 </tr>
                 {productItems.map((item) => (
-                  <tr key={item.name}>
+                  <tr
+                    key={item.name}
+                    style={{ color: !item.stocked ? "red" : "black" }}
+                  >
                     <td>{item.name}</td>
                     <td>{item.price}</td>
                   </tr>

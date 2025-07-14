@@ -3,6 +3,8 @@ import type { Product } from "../types/product";
 
 type ProductTableProps = {
   products: Product[];
+  inStocksProduct: boolean;
+  //   setInStocksProducts: () => void;
 };
 
 // [
@@ -14,7 +16,10 @@ type ProductTableProps = {
 //   { category: "Vegetables", price: "$1", stocked: true, name: "Peas" },
 // ]
 
-const ProductTable: React.FC<ProductTableProps> = ({ products }) => {
+const ProductTable: React.FC<ProductTableProps> = ({
+  products,
+  inStocksProduct,
+}) => {
   const groupProductsByCategory = products.reduce<Record<string, Product[]>>(
     (acc, currentProduct) => {
       if (!acc[currentProduct.category]) {
@@ -50,49 +55,20 @@ const ProductTable: React.FC<ProductTableProps> = ({ products }) => {
                 <tr>
                   <th colSpan={2}>{category}</th>
                 </tr>
-                {productItems.map((item) => (
-                  <tr
-                    key={item.name}
-                    style={{ color: !item.stocked ? "red" : "black" }}
-                  >
-                    <td>{item.name}</td>
-                    <td>{item.price}</td>
-                  </tr>
-                ))}
+                {productItems
+                  .filter((item) => !inStocksProduct || item.stocked)
+                  .map((filteredItem) => (
+                    <tr
+                      key={filteredItem.name}
+                      style={{ color: !filteredItem.stocked ? "red" : "black" }}
+                    >
+                      <td>{filteredItem.name}</td>
+                      <td>{filteredItem.price}</td>
+                    </tr>
+                  ))}
               </React.Fragment>
             )
           )}
-          {/* <tr>
-            <th colSpan={2}>Fruits</th>
-          </tr>
-          <tr>
-            <td>Apple</td>
-            <td>$1</td>
-          </tr>
-          <tr>
-            <td>Dragonfruit</td>
-            <td>$1</td>
-          </tr>
-          <tr>
-            <td>Passionfruit</td>
-            <td>$2</td>
-          </tr>
-
-          <tr>
-            <th colSpan={2}>Vegetables</th>
-          </tr>
-          <tr>
-            <td>Spinach</td>
-            <td>$2</td>
-          </tr>
-          <tr>
-            <td>Pumpkin</td>
-            <td>$4</td>
-          </tr>
-          <tr>
-            <td>Peas</td>
-            <td>$1</td>
-          </tr> */}
         </tbody>
       </table>
     </>

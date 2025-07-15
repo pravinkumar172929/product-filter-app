@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import "./App.css";
-import { SearchBar } from "./features/SearchBar";
+import SearchBar from "./features/SearchBar";
 import ProductTable from "./features/ProductTable";
 
 import type { Product } from "./types/product";

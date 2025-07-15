@@ -7,7 +7,7 @@ type SearchBarProps = {
   setSearchText: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export const SearchBar: React.FC<SearchBarProps> = ({
+const SearchBar: React.FC<SearchBarProps> = ({
   setInStocksProduct,
   inStocksProduct,
   searchText,
@@ -37,3 +37,4 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     </>
   );
 };
+export default SearchBar;

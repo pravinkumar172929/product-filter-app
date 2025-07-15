@@ -1,11 +1,12 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+
 import "./App.css";
-import { SearchBar } from "./features/SearchBar";
+import SearchBar from "./features/SearchBar";
 import ProductTable from "./features/ProductTable";
 
-const PRODUCTS = [
+import type { Product } from "./types/product";
+
+const PRODUCTS: Product[] = [
   { category: "Fruits", price: "$1", stocked: true, name: "Apple" },
   { category: "Fruits", price: "$1", stocked: true, name: "Dragonfruit" },
   { category: "Fruits", price: "$2", stocked: false, name: "Passionfruit" },
@@ -15,10 +16,22 @@ const PRODUCTS = [
 ];
 
 function App() {
+  const [inStocksProduct, setInStocksProduct] = useState<boolean>(false);
+  const [searchText, setSearchText] = useState<string>("");
+
   return (
     <>
-      <SearchBar />
-      <ProductTable />
+      <SearchBar
+        setInStocksProduct={setInStocksProduct}
+        inStocksProduct={inStocksProduct}
+        searchText={searchText}
+        setSearchText={setSearchText}
+      />
+      <ProductTable
+        products={PRODUCTS}
+        inStocksProduct={inStocksProduct}
+        searchText={searchText}
+      />
     </>
   );
 }

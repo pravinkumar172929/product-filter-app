@@ -1,6 +1,34 @@
 import React from "react";
+import type { Product } from "../types/product";
 
-const ProductTable = () => {
+type ProductTableProps = {
+  products: Product[];
+  inStocksProduct: boolean;
+  searchText: string;
+};
+
+const ProductTable: React.FC<ProductTableProps> = ({
+  products,
+  inStocksProduct,
+  searchText,
+}) => {
+  const groupedProductsByCategory = products.reduce<Record<string, Product[]>>(
+    (acc, currentProduct) => {
+      if (!acc[currentProduct.category]) {
+        acc[currentProduct.category] = [];
+      }
+      acc[currentProduct.category].push(currentProduct);
+      return acc;
+    },
+    {}
+  );
+
+  //   string = the key (category name like "Fruits" or "Vegetables")
+  //   Product[] = the value (an array of products in that category)
+  //      built in in TS   ==>.     type Record<K extends keyof any, T> = {
+  //   [P in K]: T;
+  // };
+
   return (
     <>
       <table>
@@ -11,37 +39,35 @@ const ProductTable = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th colSpan={2}>Fruits</th>
-          </tr>
-          <tr>
-            <td>Apple</td>
-            <td>$1</td>
-          </tr>
-          <tr>
-            <td>Dragonfruit</td>
-            <td>$1</td>
-          </tr>
-          <tr>
-            <td>Passionfruit</td>
-            <td>$2</td>
-          </tr>
-
-          <tr>
-            <th colSpan={2}>Vegetables</th>
-          </tr>
-          <tr>
-            <td>Spinach</td>
-            <td>$2</td>
-          </tr>
-          <tr>
-            <td>Pumpkin</td>
-            <td>$4</td>
-          </tr>
-          <tr>
-            <td>Peas</td>
-            <td>$1</td>
-          </tr>
+          {Object.entries(groupedProductsByCategory).map(
+            ([category, productItems]) => {
+              const filteredItems = productItems.filter(
+                (item) =>
+                  (!inStocksProduct || item.stocked) &&
+                  item.name
+                    .toLocaleLowerCase()
+                    .includes(searchText.toLocaleLowerCase())
+              );
+              return (
+                <React.Fragment key={category}>
+                  <tr>
+                    <th colSpan={2}>{category}</th>
+                  </tr>
+                  {filteredItems.map((filteredItem) => (
+                    <tr
+                      key={filteredItem.name}
+                      style={{
+                        color: !filteredItem.stocked ? "red" : "black",
+                      }}
+                    >
+                      <td>{filteredItem.name}</td>
+                      <td>{filteredItem.price}</td>
+                    </tr>
+                  ))}
+                </React.Fragment>
+              );
+            }
+          )}
         </tbody>
       </table>
     </>

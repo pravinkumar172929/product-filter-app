@@ -12,7 +12,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
   inStocksProduct,
   searchText,
 }) => {
-  const groupProductsByCategory = products.reduce<Record<string, Product[]>>(
+  const groupedProductsByCategory = products.reduce<Record<string, Product[]>>(
     (acc, currentProduct) => {
       if (!acc[currentProduct.category]) {
         acc[currentProduct.category] = [];
@@ -39,7 +39,7 @@ const ProductTable: React.FC<ProductTableProps> = ({
           </tr>
         </thead>
         <tbody>
-          {Object.entries(groupProductsByCategory).map(
+          {Object.entries(groupedProductsByCategory).map(
             ([category, productItems]) => {
               const filteredItems = productItems.filter(
                 (item) =>
